@@ -1,0 +1,112 @@
+[
+  {
+    "date": "2026-03-31",
+    "mda": "Federal college of horticulture, dadin-kowa, gombe",
+    "beneficiary": "Obet-obet nigeria limited",
+    "amount": 134246912.75,
+    "description": "Construction, equipping and furnishing of ict centre borno central senatorial district, borno state location 1",
+    "payment_ref": "1001400070-1",
+    "payer_code": "0215034001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683855"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal co-operative college- oji river",
+    "beneficiary": "Beyer dynamic ltd",
+    "amount": 145470900.0,
+    "description": "Being mobilization payment for supply of grains, fertilizers, cereal, herbicides and insecticides to rural farmers in some lga in niger delta - c - by beyer dyna ltd",
+    "payment_ref": "1001378943-3",
+    "payer_code": "0215031001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683876"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal co-operative college- oji river",
+    "beneficiary": "Ice-ligne synergy ltd",
+    "amount": 51894810.0,
+    "description": "Being mobilization payment for installation of solar street light in akamkpa/biase federal constituency, cross river state. execu byice-ligne synergy ltd",
+    "payment_ref": "1001379973-3",
+    "payer_code": "0215031001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683883"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal college of horticulture, dadin-kowa, gombe",
+    "beneficiary": "Smile project international resources limited",
+    "amount": 134246819.1,
+    "description": "Construction, equipping and furnishing of ict centre borno central senatorial district, borno state location 2",
+    "payment_ref": "1001400035-1",
+    "payer_code": "0215034001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683896"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal co-operative college- oji river",
+    "beneficiary": "Federal inland revenue services",
+    "amount": 5999400.0,
+    "description": "Being 2% wht of mob for provision of access roads and erosion control in uzii and some selected states in nig. excut by swam construction ltd",
+    "payment_ref": "1001379026-3",
+    "payer_code": "0215031001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683903"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal co-operative college- oji river",
+    "beneficiary": "Stargate global resources mega concepts ltd",
+    "amount": 29100000.0,
+    "description": "Being 30% mob for supply of cocoa chemicals spraying pumps in ikom/boki federal constituency, cross river state exect by stargate global resources mega concepts ltd",
+    "payment_ref": "1001379249-3",
+    "payer_code": "0215031001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683910"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal college of horticulture, dadin-kowa, gombe",
+    "beneficiary": "Federal inland revenue services",
+    "amount": 11249733.44,
+    "description": "Being 7.5% vat on construction, equipping and furnishing of ict centre borno central senatorial district, borno state location 2",
+    "payment_ref": "1001400035-2",
+    "payer_code": "0215034001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683916"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal co-operative college- oji river",
+    "beneficiary": "Federal inland revenue services",
+    "amount": 22497750.0,
+    "description": "Being 7.5% vat of mob for provision of access roads and erosion control in uzii and some selected states in nig. excut by swam construction ltd",
+    "payment_ref": "1001379026-2",
+    "payer_code": "0215031001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683933"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal co-operative college- oji river",
+    "beneficiary": "Flacon nig ltd",
+    "amount": 29094180.0,
+    "description": "Being mob payment for supply of agricultural equipment for selected farmers at ogoja and yala local government areas in ogoja/yala federal constituency, cross river state. execu by flacon nig ltd",
+    "payment_ref": "1001379892-3",
+    "payer_code": "0215031001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683941"
+  },
+  {
+    "date": "2026-03-31",
+    "mda": "Federal college of horticulture, dadin-kowa, gombe",
+    "beneficiary": "Sylvalab construction ltd",
+    "amount": 26849999.9,
+    "description": "Being for drilling and installation of boreholes at kankia/ingawa federal constituency, katsina state",
+    "payment_ref": "1001398654-1",
+    "payer_code": "0215034001",
+    "source": "govspend",
+    "scraped_at": "2026-05-29T09:55:24.683948"
+  }
+]
