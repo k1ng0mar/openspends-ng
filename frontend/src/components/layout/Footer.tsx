@@ -1,10 +1,15 @@
 export default function Footer() {
   return (
-    <footer className="border-t border-gray-200 bg-gray-50 mt-16">
-      <div className="max-w-7xl mx-auto px-4 py-8 text-sm text-gray-500">
-        <div className="flex justify-between items-center">
-          <p>OpenSpends NG — Data sourced from public government portals.</p>
-          <p>Built for transparency.</p>
+    <footer className="border-t border-dark-700 bg-dark-950 mt-auto">
+      <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="text-xs text-gray-500">
+          OpenSpends NG — Data sourced from public government portals. Built for transparency.
+        </p>
+        <div className="flex gap-4 text-xs text-gray-600">
+          <span>MIT License</span>
+          <a href="https://github.com/k1ng0mar/openspends-ng" className="hover:text-gray-400 transition-colors">
+            GitHub
+          </a>
         </div>
       </div>
     </footer>

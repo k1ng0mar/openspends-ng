@@ -10,7 +10,7 @@ import MapPage from './pages/Map'
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-white text-gray-900 flex flex-col">
+      <div className="min-h-screen bg-dark-950 text-gray-200 flex flex-col">
         <Header />
         <main className="flex-1">
           <Routes>
