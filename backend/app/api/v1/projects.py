@@ -55,8 +55,8 @@ async def list_projects(
             status=p["status"],
             budget_allocated=float(p["budget_allocated"]) if p.get("budget_allocated") else None,
             spent=float(p["spent"]) if p.get("spent") else None,
-            latitude=None,  # Will extract from geolocation later
-            longitude=None,
+            latitude=p.get("latitude"),
+            longitude=p.get("longitude"),
             source=p.get("source"),
         ))
     
@@ -86,7 +86,7 @@ async def get_project(
         status=p["status"],
         budget_allocated=float(p["budget_allocated"]) if p.get("budget_allocated") else None,
         spent=float(p["spent"]) if p.get("spent") else None,
-        latitude=None,
-        longitude=None,
+        latitude=p.get("latitude"),
+        longitude=p.get("longitude"),
         source=p.get("source"),
     )
