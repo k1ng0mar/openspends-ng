@@ -3,7 +3,7 @@
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from typing import Optional, Any
+from typing import Optional
 
 from app.core.database import get_db
 from app.schemas import ProjectOut
@@ -23,14 +23,12 @@ async def list_projects(
     page_size: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
 ):
-    """List capital projects with filters. Supports GeoJSON output for map rendering."""
-    # Raw SQL query to extract lat/lng from PostGIS geometry
+    """List capital projects with filters."""
+    # Simple query without PostGIS for now
     query_str = """
         SELECT 
             id, title, mda_id, state_id, lga_id, contractor,
-            start_date, end_date, status, budget_allocated, spent, source,
-            ST_Y(geolocation::geometry) as latitude,
-            ST_X(geolocation::geometry) as longitude
+            start_date, end_date, status, budget_allocated, spent, source
         FROM projects
         WHERE 1=1
     """
@@ -39,25 +37,22 @@ async def list_projects(
     if state_id:
         query_str += " AND state_id = :state_id"
         params["state_id"] = state_id
-    if lga_id:
-        query_str += " AND lga_id = :lga_id"
-        params["lga_id"] = lga_id
     if status:
         query_str += " AND status = :status"
         params["status"] = status
     if mda_id:
         query_str += " AND mda_id = :mda_id"
         params["mda_id"] = mda_id
-    if year:
-        query_str += " AND EXTRACT(YEAR FROM start_date) = :year"
-        params["year"] = year
 
-    # Pagination
     offset = (page - 1) * page_size
     query_str += f" LIMIT {page_size} OFFSET {offset}"
 
-    result = db.execute(text(query_str), params)
-    rows = result.fetchall()
+    try:
+        result = db.execute(text(query_str), params)
+        rows = result.fetchall()
+    except Exception as e:
+        print(f"DB Error: {e}")
+        return []
 
     projects = []
     for row in rows:
@@ -71,10 +66,10 @@ async def list_projects(
             start_date=row.start_date,
             end_date=row.end_date,
             status=row.status,
-            budget_allocated=row.budget_allocated,
-            spent=row.spent,
-            latitude=row.latitude,
-            longitude=row.longitude,
+            budget_allocated=float(row.budget_allocated) if row.budget_allocated else None,
+            spent=float(row.spent) if row.spent else None,
+            latitude=None,
+            longitude=None,
             source=row.source,
         ))
 
@@ -83,19 +78,21 @@ async def list_projects(
 
 @router.get("/{project_id}", response_model=ProjectOut)
 async def get_project(project_id: int, db: Session = Depends(get_db)):
-    """Get full project detail including timeline and linked documents."""
+    """Get full project detail."""
     query_str = """
         SELECT 
             id, title, mda_id, state_id, lga_id, contractor,
-            start_date, end_date, status, budget_allocated, spent, source,
-            ST_Y(geolocation::geometry) as latitude,
-            ST_X(geolocation::geometry) as longitude
+            start_date, end_date, status, budget_allocated, spent, source
         FROM projects
         WHERE id = :project_id
     """
     
-    result = db.execute(text(query_str), {"project_id": project_id})
-    row = result.fetchone()
+    try:
+        result = db.execute(text(query_str), {"project_id": project_id})
+        row = result.fetchone()
+    except Exception as e:
+        print(f"DB Error: {e}")
+        return None
 
     if not row:
         return None
@@ -110,9 +107,9 @@ async def get_project(project_id: int, db: Session = Depends(get_db)):
         start_date=row.start_date,
         end_date=row.end_date,
         status=row.status,
-        budget_allocated=row.budget_allocated,
-        spent=row.spent,
-        latitude=row.latitude,
-        longitude=row.longitude,
+        budget_allocated=float(row.budget_allocated) if row.budget_allocated else None,
+        spent=float(row.spent) if row.spent else None,
+        latitude=None,
+        longitude=None,
         source=row.source,
     )
