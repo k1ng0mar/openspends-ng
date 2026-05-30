@@ -1,31 +1,25 @@
-"""MDA (Ministry/Department/Agency) endpoints."""
+"""MDA endpoints using Supabase REST API."""
 
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy.orm import Session
-from typing import Optional
+from fastapi import APIRouter, Depends
+from typing import List
 
-from app.core.database import get_db
-from app.schemas import MDAOut
+from app.core.config import settings
+from app.core.supabase_client import SupabaseClient
 
 router = APIRouter()
 
 
-@router.get("/", response_model=list[MDAOut])
+def get_supabase() -> SupabaseClient:
+    return SupabaseClient(
+        url=settings.SUPABASE_URL,
+        anon_key=settings.SUPABASE_KEY,
+        service_key=settings.SUPABASE_SERVICE_KEY
+    )
+
+
+@router.get("/")
 async def list_mdas(
-    level: Optional[str] = Query(None, pattern="^(fed|state|lga)$"),
-    state_id: Optional[int] = None,
-    ncoa_sector: Optional[str] = None,
-    page: int = Query(1, ge=1),
-    page_size: int = Query(20, ge=1, le=100),
-    db: Session = Depends(get_db),
+    supabase: SupabaseClient = Depends(get_supabase)
 ):
-    """List MDAs with optional filters."""
-    # TODO: implement query with filters
-    return []
-
-
-@router.get("/{mda_id}", response_model=MDAOut)
-async def get_mda(mda_id: int, db: Session = Depends(get_db)):
-    """Get single MDA details."""
-    # TODO: implement
-    return {}
+    """List all MDAs."""
+    return await supabase.get_mdas()

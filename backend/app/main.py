@@ -59,24 +59,25 @@ async def health_check():
 
 @app.get("/debug/db")
 async def debug_db():
-    """Test database connection."""
-    from app.core.database import engine
-    from sqlalchemy import text
+    """Test Supabase REST API connection."""
+    from app.core.supabase_client import SupabaseClient
     from app.core.config import settings
     
     try:
-        with engine.connect() as conn:
-            result = conn.execute(text("SELECT COUNT(*) FROM projects"))
-            count = result.scalar()
-            return {
-                "status": "connected",
-                "project_count": count,
-                "db_url_host": str(engine.url.host) if engine.url.host else "none",
-                "settings_database_url": settings.DATABASE_URL[:50] + "..."
-            }
+        client = SupabaseClient(
+            url=settings.SUPABASE_URL,
+            anon_key=settings.SUPABASE_KEY,
+            service_key=settings.SUPABASE_SERVICE_KEY
+        )
+        count = await client.count_projects()
+        return {
+            "status": "connected",
+            "project_count": count,
+            "supabase_url": settings.SUPABASE_URL
+        }
     except Exception as e:
         return {
             "status": "error",
             "message": str(e)[:200],
-            "settings_database_url": settings.DATABASE_URL[:50] + "..."
+            "supabase_url": settings.SUPABASE_URL
         }
