@@ -153,6 +153,48 @@ class GeographicDataPoint(BaseModel):
     project_count: int
 
 
+# ── Variance / Researcher Suite ──
+
+class VarianceFlagItem(BaseModel):
+    mda_id: int
+    mda_name: str
+    mda_code: Optional[str] = None
+    year: Optional[int] = None
+    allocated: float
+    spent: float
+    variance_amount: float
+    variance_pct: float
+    utilization_pct: float
+    flag: str  # "over_utilization" | "under_utilization" | "on_track"
+    budget_lines: int = 0
+    spending_transactions: int = 0
+
+
+class VarianceSummary(BaseModel):
+    total_mdas: int = 0
+    over_utilized: int = 0
+    under_utilized: int = 0
+    on_track: int = 0
+
+
+class VarianceAnalysisResponse(BaseModel):
+    data: list[VarianceFlagItem]
+    total: int
+    page: int
+    page_size: int
+    pages: int
+    summary: VarianceSummary
+
+
+class ExportFormatResponse(BaseModel):
+    """Metadata describing available export formats."""
+    formats: list[str] = ["csv", "json"]
+    available_filters: list[str] = [
+        "mda_id", "state_id", "year", "date_from", "date_to",
+        "amount_min", "amount_max", "ncoa_code", "budget_type",
+    ]
+
+
 # ── Geocoding ──
 
 class GeocodeRequest(BaseModel):

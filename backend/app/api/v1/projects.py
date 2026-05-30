@@ -14,10 +14,10 @@ router = APIRouter()
 async def list_projects(
     state_id: Optional[int] = None,
     lga_id: Optional[int] = None,
-    status: Optional[str] = Query(None, regex="^(not_started|in_progress|completed|abandoned)$"),
+    status: Optional[str] = Query(None, pattern="^(not_started|in_progress|completed|abandoned)$"),
     mda_id: Optional[int] = None,
     year: Optional[int] = None,
-    format: str = Query("json", regex="^(json|geojson)$"),
+    format: str = Query("json", pattern="^(json|geojson)$"),
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),

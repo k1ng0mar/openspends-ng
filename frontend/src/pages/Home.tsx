@@ -1,167 +1,255 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react';
+import { fetchProjects, type Project } from '../lib/api';
+import ProjectMap from '../components/map/ProjectMap';
 
 export default function HomePage() {
-  const [query, setQuery] = useState('')
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [stats, setStats] = useState({
+    totalBudget: 0,
+    totalSpent: 0,
+    projectCount: 0,
+    overUtilized: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const projData = await fetchProjects();
+        setProjects(projData);
+        
+        const totalSpent = projData.reduce((acc: number, p: Project) => acc + (p.spent || 0), 0);
+        const totalBudget = projData.reduce((acc: number, p: Project) => acc + (p.budget_allocated || 0), 0);
+        
+        setStats({
+          totalBudget,
+          totalSpent,
+          projectCount: projData.length,
+          overUtilized: projData.filter(p => (p.spent || 0) > (p.budget_allocated || 0) * 1.1).length,
+        });
+      } catch (err) {
+        console.error('Failed to load home data:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
+  const formatNaira = (amount: number) => {
+    if (amount >= 1e12) return `₦${(amount / 1e12).toFixed(1)}T`;
+    if (amount >= 1e9) return `₦${(amount / 1e9).toFixed(1)}B`;
+    if (amount >= 1e6) return `₦${(amount / 1e6).toFixed(1)}M`;
+    return `₦${amount.toLocaleString()}`;
+  };
+
+  const variance = stats.totalBudget > 0 
+    ? ((stats.totalSpent - stats.totalBudget) / stats.totalBudget * 100).toFixed(1)
+    : '0.0';
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-
-      {/* ── Hero ── */}
-      <section className="mb-14">
-        <div className="mb-2 text-xs font-mono text-accent/60 uppercase tracking-widest">
-          Nigeria Budget Explorer
-        </div>
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
-          OpenSpends <span className="text-accent">NG</span>
-        </h1>
-        <p className="text-base text-gray-400 max-w-2xl mb-8">
-          Track federal, state & local government budget allocation and spending —
-          per ministry, project, and GPS location. Built for citizens. Built for journalists.
-        </p>
-
-        {/* Search */}
-        <div className="flex gap-3 max-w-lg">
-          <div className="flex-1 relative">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search MDA, project, or LGA…"
-              className="w-full pl-10 pr-4 py-3 bg-dark-800 border border-dark-600 rounded-lg text-white placeholder-gray-500 text-sm focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/20 transition-colors"
-            />
-          </div>
-          <button className="px-5 py-3 bg-accent text-dark-950 rounded-lg font-semibold text-sm hover:bg-accent-dim transition-colors">
-            Search
-          </button>
+    <div className="min-h-screen">
+      {/* === MASTHEAD SECTION === */}
+      <section className="border-b-[3px] border-[#111111] bg-[#111111] py-8">
+        <div className="max-w-[1200px] mx-auto px-4">
+          <h1 className="font-masthead text-3xl text-[#FCFAF5]">
+            Nigeria Budget Transparency Dashboard
+          </h1>
+          <p className="text-[#BDB8AD] mt-2 max-w-2xl">
+            Federal, state, and local government spending tracked by ministry, 
+            project, and geolocation. Sourced from public records.
+          </p>
         </div>
       </section>
 
-      {/* ── Stats Row ── */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-14">
-        <StatCard label="2025 Budget" value="₦54.99T" hint="Approved federal" accent />
-        <StatCard label="States Tracked" value="7" hint="Full fiscal data" />
-        <StatCard label="Projects" value="500+" hint="With GPS coordinates" />
-        <StatCard label="Data Sources" value="12" hint="Govt portals + civic tech" />
-      </section>
-
-      {/* ── Main Content Grid ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-14">
-
-        {/* Map Preview */}
-        <div className="lg:col-span-2 bg-dark-800 rounded-xl border border-dark-600 overflow-hidden">
-          <div className="px-5 py-4 border-b border-dark-700 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-white">Spending by Location</h2>
-            <a href="/map" className="text-xs text-accent hover:text-accent-dim transition-colors">
-              Full Map →
-            </a>
-          </div>
-          <div className="h-80 bg-dark-900 flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 opacity-5">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-              </svg>
-            </div>
-            <div className="text-center z-10">
-              <div className="text-5xl mb-3 opacity-30">🗺️</div>
-              <p className="text-sm text-gray-500">Mapbox heatmap</p>
-              <p className="text-xs text-gray-600 mt-1">Connect MAPBOX_TOKEN to render</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Top Spenders */}
-        <div className="bg-dark-800 rounded-xl border border-dark-600">
-          <div className="px-5 py-4 border-b border-dark-700">
-            <h2 className="text-sm font-semibold text-white">Top MDAs by Budget</h2>
-          </div>
-          <div className="p-5 space-y-4">
-            {[
-              { name: 'Finance', amount: '₦5.2T', pct: 100 },
-              { name: 'Health', amount: '₦2.1T', pct: 40 },
-              { name: 'Education', amount: '₦1.45T', pct: 28 },
-              { name: 'Defence', amount: '₦950B', pct: 18 },
-              { name: 'Works', amount: '₦1.1T', pct: 21 },
-            ].map((mda) => (
-              <div key={mda.name}>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-300">{mda.name}</span>
-                  <span className="text-gray-400 font-mono">{mda.amount}</span>
-                </div>
-                <div className="h-1.5 bg-dark-700 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-accent/70 rounded-full transition-all"
-                    style={{ width: `${mda.pct}%` }}
-                  />
-                </div>
+      {/* === STAT GRID === */}
+      <section className="border-b-[1px] border-[#111111] bg-[#F4F1EA]">
+        <div className="max-w-[1200px] mx-auto px-4 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-y md:divide-y-0 divide-[#111111]">
+            {/* Total Allocated */}
+            <div className="p-6 bg-[#FCFAF5]">
+              <div className="text-label-caps text-[#747878] mb-2">
+                Total Allocated
               </div>
-            ))}
+              <div className="text-data-lg text-[#111111]">
+                {loading ? '---' : formatNaira(stats.totalBudget)}
+              </div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">
+                Across all projects
+              </div>
+            </div>
+
+            {/* Total Spent */}
+            <div className="p-6 bg-[#FCFAF5]">
+              <div className="text-label-caps text-[#747878] mb-2">
+                Total Spent
+              </div>
+              <div className="text-data-lg text-[#111111]">
+                {loading ? '---' : formatNaira(stats.totalSpent)}
+              </div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">
+                Actual expenditure
+              </div>
+            </div>
+
+            {/* Variance */}
+            <div className="p-6 bg-[#FCFAF5]">
+              <div className="text-label-caps text-[#747878] mb-2">
+                Variance
+              </div>
+              <div className={`text-data-lg ${
+                parseFloat(variance) > 0 ? 'text-[#8C2929]' : 'text-[#2D5D40]'
+              }`}>
+                {loading ? '---' : `${variance}%`}
+              </div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">
+                {parseFloat(variance) > 0 ? 'Over budget' : 'Under budget'}
+              </div>
+            </div>
+
+            {/* Active Projects */}
+            <div className="p-6 bg-[#FCFAF5]">
+              <div className="text-label-caps text-[#747878] mb-2">
+                Active Projects
+              </div>
+              <div className="text-data-lg text-[#111111]">
+                {loading ? '---' : stats.projectCount.toLocaleString()}
+              </div>
+              <div className="text-data-sm text-[#8C2929] mt-1">
+                {stats.overUtilized} over-utilized
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ── Recent Projects ── */}
-      <section>
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-sm font-semibold text-white">Recent Project Updates</h2>
-          <a href="/projects" className="text-xs text-accent hover:text-accent-dim transition-colors">
-            View All →
-          </a>
-        </div>
-        <div className="text-gray-500 text-center py-10 border border-dark-600 rounded-xl text-sm bg-dark-800/50">
-          Projects will appear once data is ingested.
+      {/* === MAIN CONTENT: GRID LAYOUT === */}
+      <section className="max-w-[1200px] mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 divide-y lg:divide-y-0 lg:divide-x divide-[#111111]">
+          
+          {/* LEFT: Recent Transactions (spans 2 cols) */}
+          <div className="lg:col-span-2 p-6 bg-[#FCFAF5] border border-[#111111]">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-masthead text-xl text-[#111111]">
+                Recent Projects
+              </h2>
+              <a
+                href="/projects"
+                className="text-nav-label text-[#111111] hover:bg-[#E5E0D8] px-2 py-1 transition-colors"
+              >
+                VIEW ALL →
+              </a>
+            </div>
+
+            {loading ? (
+              <div className="text-data-sm text-[#BDB8AD] py-8 text-center">
+                Loading project data...
+              </div>
+            ) : projects.length === 0 ? (
+              <div className="text-data-sm text-[#BDB8AD] py-8 text-center">
+                No projects found. Backend may be unavailable.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-data-sm zebra-stripe">
+                  <thead>
+                    <tr className="border-b border-[#111111]">
+                      <th className="py-2 pr-4 text-label-caps text-[#747878] font-normal">Project</th>
+                      <th className="py-2 pr-4 text-label-caps text-[#747878] font-normal">Ministry</th>
+                      <th className="py-2 pr-4 text-label-caps text-[#747878] font-normal text-right">Allocated</th>
+                      <th className="py-2 pr-4 text-label-caps text-[#747878] font-normal text-right">Spent</th>
+                      <th className="py-2 text-label-caps text-[#747878] font-normal text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.slice(0, 8).map((p) => {
+                      const statusColor = (p.spent || 0) > (p.budget_allocated || 0) * 1.1 
+                        ? 'text-[#8C2929]' 
+                        : 'text-[#2D5D40]';
+                      const statusText = (p.spent || 0) > (p.budget_allocated || 0) * 1.1 
+                        ? 'OVER' 
+                        : 'OK';
+                      
+                      return (
+                        <tr key={p.id} className="border-b border-[#E5E0D8]">
+                          <td className="py-3 pr-4 text-[#111111]">{p.title || `Project ${p.id}`}</td>
+                          <td className="py-3 pr-4 text-[#747878]">{p.mda_name || 'N/A'}</td>
+                          <td className="py-3 pr-4 text-right font-mono">{formatNaira(p.budget_allocated || 0)}</td>
+                          <td className="py-3 pr-4 text-right font-mono">{formatNaira(p.spent || 0)}</td>
+                          <td className={`py-3 text-center font-mono ${statusColor}`}>
+                            {statusText}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT: Mini Map */}
+          <div className="p-6 bg-[#F4F1EA] border border-[#111111]">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-masthead text-xl text-[#111111]">
+                Spatial View
+              </h2>
+              <a
+                href="/map"
+                className="text-nav-label text-[#111111] hover:bg-[#E5E0D8] px-2 py-1 transition-colors"
+              >
+                FULL MAP →
+              </a>
+            </div>
+            
+            <div className="border border-[#111111] bg-[#FCFAF5] h-[300px] relative">
+              {loading ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-data-sm text-[#BDB8AD]">Loading map...</span>
+                </div>
+              ) : (
+                <ProjectMap projects={projects} height="300px" showControls={false} />
+              )}
+            </div>
+
+            <div className="mt-4 space-y-2">
+              <div className="flex justify-between text-data-sm">
+                <span className="text-[#747878]">Projects mapped</span>
+                <span className="font-mono text-[#111111]">{projects.filter(p => p.latitude && p.longitude).length}</span>
+              </div>
+              <div className="flex justify-between text-data-sm">
+                <span className="text-[#747878]">Without location</span>
+                <span className="font-mono text-[#111111]">{projects.filter(p => !p.latitude || !p.longitude).length}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── Data Sources ── */}
-      <section className="mt-14 pt-10 border-t border-dark-700">
-        <h2 className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
-          Data Sources
-        </h2>
-        <div className="flex flex-wrap gap-2">
-          {[
-            'Budget Office of the Federation',
-            'GovSpend.ng (BudgIT)',
-            'Tracka.ng (BudgIT)',
-            'NGF Public Finance DB',
-            'OAGF',
-            'BPP / NOCOPO',
-            'ICPC',
-            'NBS',
-          ].map((source) => (
-            <span
-              key={source}
-              className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-full text-xs text-gray-400"
-            >
-              {source}
-            </span>
-          ))}
+      {/* === DATA SOURCES === */}
+      <section className="border-t-[1px] border-[#111111] bg-[#F4F1EA] py-8">
+        <div className="max-w-[1200px] mx-auto px-4">
+          <div className="text-label-caps text-[#747878] mb-4">Data Sources</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-[#111111]">
+            <div className="p-4 bg-[#FCFAF5] border border-[#111111]">
+              <div className="text-data-sm text-[#111111]">Budget Office</div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">Federal allocations</div>
+            </div>
+            <div className="p-4 bg-[#FCFAF5] border border-[#111111]">
+              <div className="text-data-sm text-[#111111]">Open Treasury</div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">Payments &gt;₦10M</div>
+            </div>
+            <div className="p-4 bg-[#FCFAF5] border border-[#111111]">
+              <div className="text-data-sm text-[#111111]">BudgIT Tracka</div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">GPS projects</div>
+            </div>
+            <div className="p-4 bg-[#FCFAF5] border border-[#111111]">
+              <div className="text-data-sm text-[#111111]">NOCOPO</div>
+              <div className="text-data-sm text-[#BDB8AD] mt-1">Public contracts</div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
-  )
-}
-
-function StatCard({ label, value, hint, accent }: {
-  label: string
-  value: string
-  hint: string
-  accent?: boolean
-}) {
-  return (
-    <div className="bg-dark-800 rounded-xl border border-dark-600 p-5">
-      <div className="text-xs text-gray-500 mb-1">{label}</div>
-      <div className={`text-2xl font-bold font-mono mb-1 ${accent ? 'text-accent' : 'text-white'}`}>
-        {value}
-      </div>
-      <div className="text-xs text-gray-500">{hint}</div>
-    </div>
-  )
+  );
 }

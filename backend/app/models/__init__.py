@@ -3,7 +3,7 @@
 from datetime import datetime
 from sqlalchemy import (
     Column, Integer, String, Float, Date, DateTime, Text,
-    ForeignKey, Index, UniqueConstraint, Boolean
+    ForeignKey, Index, UniqueConstraint, Boolean, JSON
 )
 from sqlalchemy.orm import relationship
 from geoalchemy2 import Geometry
@@ -118,6 +118,7 @@ class Spending(Base):
     latitude = Column(Float)  # Denormalized for quick map queries
     longitude = Column(Float)
     source = Column(String(50))  # "govspend", "open_treasury", "manual"
+    source_hash = Column(String(64), index=True)  # SHA-256 hash for dedup
     created_at = Column(DateTime, default=datetime.utcnow)
 
     mda = relationship("MDA", back_populates="spending")
@@ -125,6 +126,7 @@ class Spending(Base):
     __table_args__ = (
         Index("idx_spending_date_mda", "date", "mda_id"),
         Index("idx_spending_amount", "amount"),
+        Index("idx_spending_source_hash", "source_hash"),
     )
 
 
@@ -146,6 +148,7 @@ class Project(Base):
     geolocation = Column(Geometry("POINT", srid=4326))  # PostGIS
     photos = Column(Text)  # JSON array of URLs
     source = Column(String(50))  # "tracka", "bpp", "icpc", "manual"
+    source_hash = Column(String(64), index=True)  # SHA-256 hash for dedup
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
@@ -155,6 +158,7 @@ class Project(Base):
     __table_args__ = (
         Index("idx_project_state_status", "state_id", "status"),
         Index("idx_project_mda", "mda_id"),
+        Index("idx_project_source_hash", "source_hash"),
     )
 
 
@@ -188,3 +192,47 @@ class Contract(Base):
     __table_args__ = (
         Index("idx_contract_ocid", "ocid"),
     )
+
+
+# ── Pipeline Infrastructure Models ──
+
+class PipelineRun(Base):
+    """Tracks each pipeline execution for monitoring and audit."""
+    __tablename__ = "pipeline_runs"
+
+    id = Column(Integer, primary_key=True)
+    source = Column(String(50), nullable=False)  # "govspend", "pdf_parser", "bpp", "icpc"
+    status = Column(String(20), nullable=False, default="pending")  # pending, running, success, failed, partial
+    started_at = Column(DateTime, nullable=False, default=datetime.utcnow)
+    finished_at = Column(DateTime)
+    records_found = Column(Integer, default=0)
+    records_inserted = Column(Integer, default=0)
+    records_updated = Column(Integer, default=0)
+    records_skipped = Column(Integer, default=0)  # Duplicates
+    error_message = Column(Text)
+    details = Column(JSON)  # Extra context: page counts, file names, etc.
+
+    __table_args__ = (
+        Index("idx_pipeline_source_status", "source", "status"),
+        Index("idx_pipeline_started", "started_at"),
+    )
+
+
+class DataSourceRegistry(Base):
+    """Registry of known external data sources and their configuration."""
+    __tablename__ = "data_sources"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False, unique=True)  # "govspend", "tracka", "bpp"
+    display_name = Column(String(200))
+    base_url = Column(String(500))
+    source_type = Column(String(20))  # "api", "scraper", "pdf", "manual"
+    is_active = Column(Boolean, default=True)
+    schedule = Column(String(100))  # Cron-like expression or interval description
+    last_success_at = Column(DateTime)
+    last_run_at = Column(DateTime)
+    run_count = Column(Integer, default=0)
+    fail_count = Column(Integer, default=0)
+    config = Column(JSON)  # Source-specific configuration
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)

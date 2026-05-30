@@ -1,37 +1,160 @@
 @import "tailwindcss";
 
+/*
+ * INSTITUTIONAL BROADSHEET — Design System Tokens
+ * Neo-Brutalist Journalism aesthetic for government transparency
+ */
+
 @theme {
-  --color-dark-950: #0a0a0f;
-  --color-dark-900: #0f0f17;
-  --color-dark-800: #16161f;
-  --color-dark-700: #1e1e2a;
-  --color-dark-600: #2a2a3a;
-  --color-dark-500: #3a3a4f;
-  --color-accent: #00e676;
-  --color-accent-dim: #00c853;
-  --color-accent-glow: rgba(0, 230, 118, 0.15);
-  --color-gold: #ffd700;
-  --color-gold-dim: #b8960f;
-  --color-danger: #ff5252;
-  --color-warn: #ffab40;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* === SURFACE HIERARCHY === */
+  --color-cream-page: #F4F1EA;       /* Primary page background — newsprint warm */
+  --color-ivory-surface: #FCFAF5;    /* Content block backgrounds */
+  --color-selection: #E5E0D8;        /* Active/hover state */
+  
+  /* Surface containers (elevation) */
+  --color-surface-lowest: #FFFFFF;
+  --color-surface-low: #F7F3F2;
+  --color-surface-base: #F1EDEC;
+  --color-surface-high: #EBE7E6;
+  --color-surface-highest: #E5E2E1;
+  
+  /* === INK (TEXT) === */
+  --color-ink-deep: #111111;         /* Structural borders, headings */
+  --color-ink-body: #1C1B1B;         /* Primary body text */
+  --color-ink-muted: #747878;        /* Secondary text, metadata */
+  --color-ink-faint: #BDB8AD;        /* Disabled, placeholder */
+  
+  /* === SEMANTIC ACCENTS === */
+  --color-oxblood: #8C2929;          /* Warnings, over-utilization */
+  --color-forest: #2D5D40;           /* Verified, under-utilization */
+  
+  /* === Borders === */
+  --color-border-hairline: #111111;
+  --color-border-separator: #747878;
+  
+  /* === TYPOGRAPHY STACKS === */
+  --font-masthead: 'Playfair Display', Georgia, serif;
+  --font-body: 'Libre Franklin', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  
+  /* === SPACING (8px base unit) === */
+  --spacing-unit: 0.5rem;
+  --spacing-container: 1rem;
+  --spacing-section: 1.5rem;
+  --spacing-max-width: 1200px;
+}
+
+/* === BASE RESET === */
+*, *::before, *::after {
+  border-radius: 0 !important; /* SHARP CORNERS EVERYWHERE */
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background-color: var(--color-dark-950);
-  color: #e0e0e0;
-  font-family: var(--font-sans);
+  background-color: var(--color-cream-page);
+  color: var(--color-ink-body);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--color-dark-900); }
-::-webkit-scrollbar-thumb { background: var(--color-dark-600); border-radius: 3px; }
+/* === TYPOGRAPHY CLASSES === */
+.font-masthead {
+  font-family: var(--font-masthead);
+  font-weight: 700;
+  line-height: 1.2;
+}
 
-/* Selection */
-::selection { background: var(--color-accent); color: #000; }
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+
+.text-label-caps {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.text-data-lg {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.text-data-sm {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.text-nav-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* === SCROLLBAR (minimal) === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-muted);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-body);
+}
+
+/* === SELECTION === */
+::selection {
+  background: var(--color-selection);
+  color: var(--color-ink-body);
+}
+
+/* === UTILITY OVERRIDES === */
+.border-hairline {
+  border: 1px solid var(--color-border-hairline);
+}
+
+.border-heavy {
+  border: 3px solid var(--color-border-hairline);
+}
+
+.border-separator {
+  border: 1px solid var(--color-border-separator);
+}
+
+/* Zebra striping for tables */
+.zebra-stripe tbody tr:nth-child(even) {
+  background-color: var(--color-surface-low);
+}
+
+.zebra-stripe tbody tr:hover {
+  background-color: var(--color-selection);
+}

@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.get("/", response_model=list[MDAOut])
 async def list_mdas(
-    level: Optional[str] = Query(None, regex="^(fed|state|lga)$"),
+    level: Optional[str] = Query(None, pattern="^(fed|state|lga)$"),
     state_id: Optional[int] = None,
     ncoa_sector: Optional[str] = None,
     page: int = Query(1, ge=1),

@@ -26,8 +26,8 @@ async def budget_spending_variance(
 @router.get("/geographic")
 async def geographic_heatmap(
     year: Optional[int] = None,
-    type: str = Query("spent", regex="^(spent|budgeted|project_count)$"),
-    level: str = Query("state", regex="^(state|lga)$"),
+    type: str = Query("spent", pattern="^(spent|budgeted|project_count)$"),
+    level: str = Query("state", pattern="^(state|lga)$"),
     db: Session = Depends(get_db),
 ):
     """

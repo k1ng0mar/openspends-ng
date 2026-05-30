@@ -11,9 +11,23 @@ from app.api.v1.router import api_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
-    # TODO: init DB pool, Redis, etc.
+    # Start the background scheduler
+    try:
+        from app.services.scheduler import start_scheduler
+        start_scheduler()
+    except Exception as e:
+        # Don't crash the app if scheduler fails to start
+        import logging
+        logging.getLogger(__name__).warning(f"Scheduler failed to start: {e}")
+
     yield
-    # TODO: close connections
+
+    # Shutdown: stop the scheduler
+    try:
+        from app.services.scheduler import stop_scheduler
+        stop_scheduler()
+    except Exception:
+        pass
 
 
 app = FastAPI(
