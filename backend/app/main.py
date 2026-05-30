@@ -62,11 +62,21 @@ async def debug_db():
     """Test database connection."""
     from app.core.database import engine
     from sqlalchemy import text
+    from app.core.config import settings
     
     try:
         with engine.connect() as conn:
             result = conn.execute(text("SELECT COUNT(*) FROM projects"))
             count = result.scalar()
-            return {"status": "connected", "project_count": count, "db_url": str(engine.url).split("@")[1] if "@" in str(engine.url) else "hidden"}
+            return {
+                "status": "connected",
+                "project_count": count,
+                "db_url_host": str(engine.url.host) if engine.url.host else "none",
+                "settings_database_url": settings.DATABASE_URL[:50] + "..."
+            }
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        return {
+            "status": "error",
+            "message": str(e)[:200],
+            "settings_database_url": settings.DATABASE_URL[:50] + "..."
+        }
