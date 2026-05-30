@@ -55,3 +55,18 @@ app.include_router(api_router, prefix="/v1")
 @app.get("/health")
 async def health_check():
     return {"status": "ok", "version": "0.1.0"}
+
+
+@app.get("/debug/db")
+async def debug_db():
+    """Test database connection."""
+    from app.core.database import engine
+    from sqlalchemy import text
+    
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT COUNT(*) FROM projects"))
+            count = result.scalar()
+            return {"status": "connected", "project_count": count, "db_url": str(engine.url).split("@")[1] if "@" in str(engine.url) else "hidden"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
