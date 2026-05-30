@@ -24,13 +24,7 @@ class Settings(BaseSettings):
 
     @property
     def database_url(self) -> str:
-        """Return Supabase connection string or local DATABASE_URL."""
-        if self.SUPABASE_URL and self.SUPABASE_SERVICE_KEY:
-            return (
-                f"postgresql+psycopg://postgres:{self.SUPABASE_SERVICE_KEY}"
-                f"@aws-0-eu-west-1.pooler.supabase.com:6543/postgres"
-                f"?sslmode=require"
-            )
+        """Return DATABASE_URL from env (already includes credentials)."""
         return self.DATABASE_URL
 
     class Config:
