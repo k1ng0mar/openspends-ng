@@ -73,7 +73,19 @@ class SupabaseClient:
             )
             response.raise_for_status()
             return response.json()
-    
+
+    async def get_mda(self, mda_id: int) -> Optional[Dict[str, Any]]:
+        """Fetch a single MDA by ID."""
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{self.url}/rest/v1/mdas",
+                headers=self._headers(),
+                params={"id": f"eq.{mda_id}", "select": "id,name,code,level"}
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data[0] if data else None
+
     async def get_states(self) -> List[Dict[str, Any]]:
         """Fetch all states."""
         async with httpx.AsyncClient() as client:

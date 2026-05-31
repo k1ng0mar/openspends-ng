@@ -23,3 +23,16 @@ async def list_mdas(
 ):
     """List all MDAs."""
     return await supabase.get_mdas()
+
+
+@router.get("/{mda_id}")
+async def get_mda(
+    mda_id: int,
+    supabase: SupabaseClient = Depends(get_supabase)
+):
+    """Get a single MDA by ID."""
+    mda = await supabase.get_mda(mda_id)
+    if not mda:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="MDA not found")
+    return mda
