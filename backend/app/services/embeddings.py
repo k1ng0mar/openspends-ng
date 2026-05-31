@@ -1,13 +1,13 @@
 """Embedding service using OpenRouter's free Llama Nemotron embed model."""
 
 import httpx
-from typing import List, Optional
+from typing import List
 
 
 class EmbeddingService:
     """Generate embeddings via OpenRouter API."""
     
-    def __init__(self, api_key: str, model: str = "openrouter/nvidia/llama-nemotron-embed-vl-1b-v2:free"):
+    def __init__(self, api_key: str, model: str = "nvidia/llama-nemotron-embed-vl-1b-v2:free"):
         self.api_key = api_key
         self.model = model
         self.base_url = "https://openrouter.ai/api/v1"
@@ -17,12 +17,14 @@ class EmbeddingService:
         
         Returns a list of embedding vectors (each is a list of floats).
         """
-        async with httpx.AsyncClient(timeout=30.0) as client:
+        async with httpx.AsyncClient(timeout=60.0) as client:
             response = await client.post(
                 f"{self.base_url}/embeddings",
                 headers={
                     "Authorization": f"Bearer {self.api_key}",
                     "Content-Type": "application/json",
+                    "HTTP-Referer": "https://openspends.ng",
+                    "X-Title": "OpenSpends NG",
                 },
                 json={
                     "model": self.model,
