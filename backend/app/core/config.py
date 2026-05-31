@@ -20,7 +20,10 @@ class Settings(BaseSettings):
     SUPABASE_SERVICE_KEY: str = ""
 
     # Redis
-    REDIS_URL: str = "redis://localhost:6379"
+    REDIS_URL: str = "redis://localhost:6379/0"
+
+    # OpenRouter (for embeddings)
+    OPENROUTER_API_KEY: str = ""
 
     @property
     def database_url(self) -> str:
