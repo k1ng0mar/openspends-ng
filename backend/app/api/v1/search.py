@@ -126,7 +126,7 @@ async def semantic_search(
             },
             json={
                 "query_embedding": query_embedding,  # pass as list, not string
-                "match_threshold": 0.05,
+                "match_threshold": 0.07,
                 "match_count": limit
             }
         )

@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter
 
-from app.api.v1 import mdas, budgets, spending, projects, analytics, geocode, pipeline, search, debug_rpc
+from app.api.v1 import mdas, budgets, spending, projects, analytics, geocode, pipeline, search
 
 api_router = APIRouter()
 
@@ -14,4 +14,3 @@ api_router.include_router(analytics.router, prefix="/analytics", tags=["Analytic
 api_router.include_router(geocode.router, prefix="/geocode", tags=["Geocoding"])
 api_router.include_router(pipeline.router, prefix="/pipeline", tags=["Pipeline"])
 api_router.include_router(search.router, prefix="/search", tags=["Search"])
-api_router.include_router(debug_rpc.router, prefix="/debug", tags=["Debug"])
