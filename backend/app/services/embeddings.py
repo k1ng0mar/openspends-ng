@@ -36,7 +36,7 @@ class EmbeddingService:
             data = response.json()
             
             # OpenRouter returns embeddings in data[i]['embedding']
-            return [item["embedding"] for item in data["data"]]
+            return [item["embedding"][:1024] for item in data["data"]]
     
     async def embed_single(self, text: str) -> List[float]:
         """Generate embedding for a single text."""
