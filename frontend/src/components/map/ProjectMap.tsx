@@ -88,21 +88,21 @@ export default function ProjectMap({
         <div className="absolute top-4 right-4 flex flex-col gap-1">
           <button
             onClick={handleZoomIn}
-            className="w-8 h-8 bg-[#FCFAF5] border border-[#111111] text-[#111111] hover:bg-[#E5E0D8] transition-colors flex items-center justify-center text-lg font-mono"
+            className="w-8 h-8 bg-ivory-surface border border-ink-deep text-ink-deep hover:bg-selection transition-colors flex items-center justify-center text-lg font-mono"
             title="Zoom in"
           >
             +
           </button>
           <button
             onClick={handleZoomOut}
-            className="w-8 h-8 bg-[#FCFAF5] border border-[#111111] text-[#111111] hover:bg-[#E5E0D8] transition-colors flex items-center justify-center text-lg font-mono"
+            className="w-8 h-8 bg-ivory-surface border border-ink-deep text-ink-deep hover:bg-selection transition-colors flex items-center justify-center text-lg font-mono"
             title="Zoom out"
           >
             −
           </button>
           <button
             onClick={handleReset}
-            className="w-8 h-8 bg-[#FCFAF5] border border-[#111111] text-[#111111] hover:bg-[#E5E0D8] transition-colors flex items-center justify-center text-xs font-mono"
+            className="w-8 h-8 bg-ivory-surface border border-ink-deep text-ink-deep hover:bg-selection transition-colors flex items-center justify-center text-xs font-mono"
             title="Reset view"
           >
             ⌂
@@ -111,20 +111,20 @@ export default function ProjectMap({
       )}
 
       {/* Legend */}
-      <div className="absolute bottom-4 left-4 bg-[#FCFAF5] border border-[#111111] px-4 py-3">
-        <div className="text-label-caps text-[#747878] mb-2">Status</div>
+      <div className="absolute bottom-4 left-4 bg-ivory-surface border border-ink-deep px-4 py-3">
+        <div className="text-label-caps text-ink-muted mb-2">Status</div>
         <div className="flex gap-3 text-data-sm">
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 bg-[#2D5D40]" />
-            <span className="text-[#111111]">On track</span>
+            <div className="w-2.5 h-2.5 bg-forest" />
+            <span className="text-ink-deep">On track</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 bg-[#8C2929]" />
-            <span className="text-[#111111]">Over</span>
+            <div className="w-2.5 h-2.5 bg-oxblood" />
+            <span className="text-ink-deep">Over</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 bg-[#BDB8AD]" />
-            <span className="text-[#111111]">Unknown</span>
+            <div className="w-2.5 h-2.5 bg-ink-faint" />
+            <span className="text-ink-deep">Unknown</span>
           </div>
         </div>
       </div>

@@ -128,7 +128,7 @@ export function BudgetSpendingBarChart({ data, height = 300, title }: BudgetSpen
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-ink-muted text-sm font-mono">
         No data available
       </div>
     )
@@ -230,7 +230,7 @@ export function VarianceChart({ data, height = 250 }: VarianceChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-ink-muted text-sm font-mono">
         No variance data
       </div>
     )
@@ -383,7 +383,7 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-ink-muted text-sm font-mono">
         No timeline data
       </div>
     )
@@ -478,7 +478,7 @@ export function DonutChart({ data, height = 220, centerLabel, centerValue }: Don
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-ink-muted text-sm font-mono">
         No data
       </div>
     )

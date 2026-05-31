@@ -45,13 +45,13 @@ export default function AnalyticsPage() {
     .slice(0, 10);
 
   return (
-    <div className="min-h-screen bg-[#F4F1EA]">
+    <div className="min-h-screen bg-cream-page">
       {/* Header */}
-      <section className="border-b-[3px] border-[#111111] bg-[#111111] py-8">
+      <section className="border-b-[3px] border-ink-deep bg-ink-deep py-8">
         <div className="max-w-[1200px] mx-auto px-4">
-          <div className="text-label-caps text-[#BDB8AD] mb-2">VARIANCE AUDIT</div>
-          <h1 className="font-masthead text-3xl text-[#FCFAF5]">Analysis Dashboard</h1>
-          <p className="text-[#BDB8AD] mt-2">
+          <div className="text-label-caps text-ink-faint mb-2">VARIANCE AUDIT</div>
+          <h1 className="font-masthead text-3xl text-ivory-surface">Analysis Dashboard</h1>
+          <p className="text-ink-faint mt-2">
             Budget vs spending variance, ministry comparisons, and fiscal breakdowns.
           </p>
         </div>
@@ -59,33 +59,33 @@ export default function AnalyticsPage() {
 
       {loading ? (
         <div className="text-center py-16">
-          <div className="text-data-lg text-[#111111]">Loading analytics...</div>
+          <div className="text-data-lg text-ink-deep">Loading analytics...</div>
         </div>
       ) : (
         <>
           {/* Summary Stats */}
-          <section className="border-b border-[#111111] bg-[#FCFAF5]">
+          <section className="border-b border-ink-deep bg-ivory-surface">
             <div className="max-w-[1200px] mx-auto px-4 py-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-y md:divide-y-0 divide-[#111111]">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-y md:divide-y-0 divide-ink-deep">
                 <div className="p-6">
-                  <div className="text-label-caps text-[#747878] mb-2">Total Tracked</div>
-                  <div className="text-data-lg text-[#111111]">{projects.length}</div>
-                  <div className="text-data-sm text-[#BDB8AD] mt-1">projects</div>
+                  <div className="text-label-caps text-ink-muted mb-2">Total Tracked</div>
+                  <div className="text-data-lg text-ink-deep">{projects.length}</div>
+                  <div className="text-data-sm text-ink-faint mt-1">projects</div>
                 </div>
                 <div className="p-6">
-                  <div className="text-label-caps text-[#747878] mb-2">Total Allocated</div>
-                  <div className="text-data-lg text-[#111111]">{formatNaira(totalBudget)}</div>
-                  <div className="text-data-sm text-[#BDB8AD] mt-1">across all MDAs</div>
+                  <div className="text-label-caps text-ink-muted mb-2">Total Allocated</div>
+                  <div className="text-data-lg text-ink-deep">{formatNaira(totalBudget)}</div>
+                  <div className="text-data-sm text-ink-faint mt-1">across all MDAs</div>
                 </div>
                 <div className="p-6">
-                  <div className="text-label-caps text-[#747878] mb-2">Total Spent</div>
-                  <div className="text-data-lg text-[#111111]">{formatNaira(totalSpent)}</div>
-                  <div className="text-data-sm text-[#BDB8AD] mt-1">actual expenditure</div>
+                  <div className="text-label-caps text-ink-muted mb-2">Total Spent</div>
+                  <div className="text-data-lg text-ink-deep">{formatNaira(totalSpent)}</div>
+                  <div className="text-data-sm text-ink-faint mt-1">actual expenditure</div>
                 </div>
                 <div className="p-6">
-                  <div className="text-label-caps text-[#747878] mb-2">Over-Utilized</div>
-                  <div className="text-data-lg text-[#8C2929]">{overCount}</div>
-                  <div className="text-data-sm text-[#BDB8AD] mt-1">projects flagged</div>
+                  <div className="text-label-caps text-ink-muted mb-2">Over-Utilized</div>
+                  <div className="text-data-lg text-oxblood">{overCount}</div>
+                  <div className="text-data-sm text-ink-faint mt-1">projects flagged</div>
                 </div>
               </div>
             </div>
@@ -93,17 +93,17 @@ export default function AnalyticsPage() {
 
           {/* MDA Breakdown */}
           <section className="max-w-[1200px] mx-auto px-4 py-8">
-            <h2 className="font-masthead text-xl text-[#111111] mb-4">Ministry Breakdown</h2>
+            <h2 className="font-masthead text-xl text-ink-deep mb-4">Ministry Breakdown</h2>
             
-            <div className="border border-[#111111] bg-[#FCFAF5] overflow-x-auto">
+            <div className="border border-ink-deep bg-ivory-surface overflow-x-auto">
               <table className="w-full text-left text-data-sm zebra-stripe">
                 <thead>
-                  <tr className="border-b-[3px] border-[#111111] bg-[#F4F1EA]">
-                    <th className="py-3 px-4 text-label-caps text-[#111111] font-normal">Ministry / Agency</th>
-                    <th className="py-3 px-4 text-label-caps text-[#111111] font-normal text-right">Projects</th>
-                    <th className="py-3 px-4 text-label-caps text-[#111111] font-normal text-right">Allocated</th>
-                    <th className="py-3 px-4 text-label-caps text-[#111111] font-normal text-right">Spent</th>
-                    <th className="py-3 px-4 text-label-caps text-[#111111] font-normal text-right">Variance</th>
+                  <tr className="border-b-[3px] border-ink-deep bg-cream-page">
+                    <th className="py-3 px-4 text-label-caps text-ink-deep font-normal">Ministry / Agency</th>
+                    <th className="py-3 px-4 text-label-caps text-ink-deep font-normal text-right">Projects</th>
+                    <th className="py-3 px-4 text-label-caps text-ink-deep font-normal text-right">Allocated</th>
+                    <th className="py-3 px-4 text-label-caps text-ink-deep font-normal text-right">Spent</th>
+                    <th className="py-3 px-4 text-label-caps text-ink-deep font-normal text-right">Variance</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -114,12 +114,12 @@ export default function AnalyticsPage() {
                     const isOver = parseFloat(v) > 0;
                     
                     return (
-                      <tr key={mda} className="border-b border-[#E5E0D8] hover:bg-[#E5E0D8]">
-                        <td className="py-3 px-4 text-[#111111]">{mda}</td>
+                      <tr key={mda} className="border-b border-selection hover:bg-selection">
+                        <td className="py-3 px-4 text-ink-deep">{mda}</td>
                         <td className="py-3 px-4 text-right font-mono">{stats.count}</td>
                         <td className="py-3 px-4 text-right font-mono">{formatNaira(stats.allocated)}</td>
                         <td className="py-3 px-4 text-right font-mono">{formatNaira(stats.spent)}</td>
-                        <td className={`py-3 px-4 text-right font-mono ${isOver ? 'text-[#8C2929]' : 'text-[#2D5D40]'}`}>
+                        <td className={`py-3 px-4 text-right font-mono ${isOver ? 'text-oxblood' : 'text-forest'}`}>
                           {isOver ? '+' : ''}{v}%
                         </td>
                       </tr>
@@ -132,17 +132,17 @@ export default function AnalyticsPage() {
 
           {/* Charts Placeholder */}
           <section className="max-w-[1200px] mx-auto px-4 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-[#111111]">
-              <div className="p-6 border border-[#111111] bg-[#FCFAF5]">
-                <div className="text-label-caps text-[#747878] mb-4">Budget vs Spending</div>
-                <div className="h-48 bg-[#F4F1EA] border border-[#E5E0D8] flex items-center justify-center">
-                  <span className="text-data-sm text-[#BDB8AD]">Chart visualization pending</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-ink-deep">
+              <div className="p-6 border border-ink-deep bg-ivory-surface">
+                <div className="text-label-caps text-ink-muted mb-4">Budget vs Spending</div>
+                <div className="h-48 bg-cream-page border border-selection flex items-center justify-center">
+                  <span className="text-data-sm text-ink-faint">Chart visualization pending</span>
                 </div>
               </div>
-              <div className="p-6 border border-[#111111] bg-[#FCFAF5]">
-                <div className="text-label-caps text-[#747878] mb-4">State Distribution</div>
-                <div className="h-48 bg-[#F4F1EA] border border-[#E5E0D8] flex items-center justify-center">
-                  <span className="text-data-sm text-[#BDB8AD]">Chart visualization pending</span>
+              <div className="p-6 border border-ink-deep bg-ivory-surface">
+                <div className="text-label-caps text-ink-muted mb-4">State Distribution</div>
+                <div className="h-48 bg-cream-page border border-selection flex items-center justify-center">
+                  <span className="text-data-sm text-ink-faint">Chart visualization pending</span>
                 </div>
               </div>
             </div>

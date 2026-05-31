@@ -93,28 +93,28 @@ export function FilterBar({
   }, [onChange, loadMDAsForState])
 
   return (
-    <div className="border border-[#111111] bg-[#FCFAF5]">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-[#E5E0D8]">
-        <span className="text-label-caps text-[#747878]">FILTERS</span>
+    <div className="border border-ink-deep bg-ivory-surface">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-selection">
+        <span className="text-label-caps text-ink-muted">FILTERS</span>
         {hasActiveFilters && (
           <button
             onClick={clearAll}
-            className="text-label-caps text-[#8C2929] hover:text-[#111111] transition-colors"
+            className="text-label-caps text-oxblood hover:text-ink-deep transition-colors"
           >
             CLEAR ALL
           </button>
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-[#111111]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 divide-y sm:divide-y-0 sm:divide-x divide-ink-deep">
         {/* State Select */}
         <div className="p-3">
-          <label className="block text-label-caps text-[#747878] mb-1">State</label>
+          <label className="block text-label-caps text-ink-muted mb-1">State</label>
           <select
             value={filters.stateId ?? ''}
             onChange={handleStateChange}
             disabled={loading}
-            className="w-full bg-[#F4F1EA] border border-[#111111] px-3 py-2 text-data-sm text-[#111111] font-mono focus:outline-none focus:border-[#111111] transition-colors appearance-none cursor-pointer disabled:opacity-40"
+            className="w-full bg-cream-page border border-ink-deep px-3 py-2 text-data-sm text-ink-deep font-mono focus:outline-none focus:border-ink-deep transition-colors appearance-none cursor-pointer disabled:opacity-40"
           >
             <option value="">All States</option>
             {states.map(s => (
@@ -125,12 +125,12 @@ export function FilterBar({
 
         {/* MDA Select */}
         <div className="p-3">
-          <label className="block text-label-caps text-[#747878] mb-1">MDA</label>
+          <label className="block text-label-caps text-ink-muted mb-1">MDA</label>
           <select
             value={filters.mdaId ?? ''}
             onChange={handleMdaChange}
             disabled={loading}
-            className="w-full bg-[#F4F1EA] border border-[#111111] px-3 py-2 text-data-sm text-[#111111] font-mono focus:outline-none focus:border-[#111111] transition-colors appearance-none cursor-pointer disabled:opacity-40"
+            className="w-full bg-cream-page border border-ink-deep px-3 py-2 text-data-sm text-ink-deep font-mono focus:outline-none focus:border-ink-deep transition-colors appearance-none cursor-pointer disabled:opacity-40"
           >
             <option value="">All MDAs</option>
             {mdas.map(m => (
@@ -142,11 +142,11 @@ export function FilterBar({
         {/* Status Select */}
         {showStatus && (
           <div className="p-3">
-            <label className="block text-label-caps text-[#747878] mb-1">Status</label>
+            <label className="block text-label-caps text-ink-muted mb-1">Status</label>
             <select
               value={filters.status}
               onChange={handleStatusChange}
-              className="w-full bg-[#F4F1EA] border border-[#111111] px-3 py-2 text-data-sm text-[#111111] font-mono focus:outline-none focus:border-[#111111] transition-colors appearance-none cursor-pointer"
+              className="w-full bg-cream-page border border-ink-deep px-3 py-2 text-data-sm text-ink-deep font-mono focus:outline-none focus:border-ink-deep transition-colors appearance-none cursor-pointer"
             >
               {statusOptions.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -158,13 +158,13 @@ export function FilterBar({
         {/* Search */}
         {showSearch && (
           <div className="p-3">
-            <label className="block text-label-caps text-[#747878] mb-1">Search</label>
+            <label className="block text-label-caps text-ink-muted mb-1">Search</label>
             <input
               type="text"
               value={filters.search}
               onChange={handleSearchChange}
               placeholder="Search projects…"
-              className="w-full bg-[#F4F1EA] border border-[#111111] px-3 py-2 text-data-sm text-[#111111] placeholder-[#BDB8AD] font-mono focus:outline-none focus:border-[#111111] transition-colors"
+              className="w-full bg-cream-page border border-ink-deep px-3 py-2 text-data-sm text-ink-deep placeholder-ink-faint font-mono focus:outline-none focus:border-ink-deep transition-colors"
             />
           </div>
         )}
@@ -172,29 +172,29 @@ export function FilterBar({
 
       {/* Active filter pills */}
       {hasActiveFilters && (
-        <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-[#E5E0D8]">
+        <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-selection">
           {filters.stateId && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-[#111111] bg-[#F4F1EA] text-data-sm text-[#111111] font-mono">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-ink-deep bg-cream-page text-data-sm text-ink-deep font-mono">
               {states.find(s => s.id === filters.stateId)?.name}
-              <button onClick={() => { onChange({ ...filters, stateId: null, mdaId: null }); loadMDAsForState(null) }} className="ml-0.5 text-[#8C2929] hover:text-[#111111] transition-colors">×</button>
+              <button onClick={() => { onChange({ ...filters, stateId: null, mdaId: null }); loadMDAsForState(null) }} className="ml-0.5 text-oxblood hover:text-ink-deep transition-colors">×</button>
             </span>
           )}
           {filters.mdaId && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-[#111111] bg-[#F4F1EA] text-data-sm text-[#111111] font-mono">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-ink-deep bg-cream-page text-data-sm text-ink-deep font-mono">
               {mdas.find(m => m.id === filters.mdaId)?.name}
-              <button onClick={() => onChange({ ...filters, mdaId: null })} className="ml-0.5 text-[#8C2929] hover:text-[#111111] transition-colors">×</button>
+              <button onClick={() => onChange({ ...filters, mdaId: null })} className="ml-0.5 text-oxblood hover:text-ink-deep transition-colors">×</button>
             </span>
           )}
           {filters.status && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-[#111111] bg-[#F4F1EA] text-data-sm text-[#111111] font-mono">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-ink-deep bg-cream-page text-data-sm text-ink-deep font-mono">
               {filters.status.replace('_', ' ')}
-              <button onClick={() => onChange({ ...filters, status: '' })} className="ml-0.5 text-[#8C2929] hover:text-[#111111] transition-colors">×</button>
+              <button onClick={() => onChange({ ...filters, status: '' })} className="ml-0.5 text-oxblood hover:text-ink-deep transition-colors">×</button>
             </span>
           )}
           {filters.search && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-[#111111] bg-[#F4F1EA] text-data-sm text-[#111111] font-mono">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 border border-ink-deep bg-cream-page text-data-sm text-ink-deep font-mono">
               "{filters.search}"
-              <button onClick={() => onChange({ ...filters, search: '' })} className="ml-0.5 text-[#8C2929] hover:text-[#111111] transition-colors">×</button>
+              <button onClick={() => onChange({ ...filters, search: '' })} className="ml-0.5 text-oxblood hover:text-ink-deep transition-colors">×</button>
             </span>
           )}
         </div>

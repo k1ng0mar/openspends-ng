@@ -84,21 +84,21 @@ export default function MapPage() {
   const mappedCount = projects.filter(p => p.latitude && p.longitude).length;
 
   return (
-    <div className="h-screen flex flex-col bg-[#F4F1EA]">
+    <div className="h-screen flex flex-col bg-cream-page">
       {/* Top Bar */}
-      <div className="border-b-[3px] border-[#111111] bg-[#111111] text-[#FCFAF5]">
+      <div className="border-b-[3px] border-ink-deep bg-ink-deep text-ivory-surface">
         <div className="max-w-[1200px] mx-auto px-4 py-4 flex justify-between items-center">
           <div>
             <h1 className="font-masthead text-2xl">Spatial Ledger</h1>
-            <p className="text-data-sm text-[#BDB8AD] mt-1">
+            <p className="text-data-sm text-ink-faint mt-1">
               {loading ? 'Loading...' : `${mappedCount} projects mapped`}
             </p>
           </div>
-          <div className="flex gap-0 divide-x divide-[#FCFAF5]">
-            <button className="px-4 py-2 text-nav-label text-[#FCFAF5] hover:bg-[#8C2929] transition-colors">
+          <div className="flex gap-0 divide-x divide-ivory-surface">
+            <button className="px-4 py-2 text-nav-label text-ivory-surface hover:bg-oxblood transition-colors">
               FILTER
             </button>
-            <button className="px-4 py-2 text-nav-label text-[#FCFAF5] hover:bg-[#8C2929] transition-colors">
+            <button className="px-4 py-2 text-nav-label text-ivory-surface hover:bg-oxblood transition-colors">
               EXPORT
             </button>
           </div>
@@ -108,28 +108,28 @@ export default function MapPage() {
       {/* Main Content: Map + Sidebar */}
       <div className="flex-1 flex flex-col lg:flex-row">
         {/* Sidebar */}
-        <aside className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-[#111111] bg-[#FCFAF5] overflow-y-auto">
-          <div className="p-4 border-b border-[#111111]">
-            <div className="text-label-caps text-[#747878] mb-2">Legend</div>
+        <aside className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-ink-deep bg-ivory-surface overflow-y-auto">
+          <div className="p-4 border-b border-ink-deep">
+            <div className="text-label-caps text-ink-muted mb-2">Legend</div>
             <div className="flex gap-4 text-data-sm">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#2D5D40] border border-[#111111]" />
-                <span className="text-[#111111]">On track</span>
+                <div className="w-3 h-3 bg-forest border border-ink-deep" />
+                <span className="text-ink-deep">On track</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-[#8C2929] border border-[#111111]" />
-                <span className="text-[#111111]">Over-utilized</span>
+                <div className="w-3 h-3 bg-oxblood border border-ink-deep" />
+                <span className="text-ink-deep">Over-utilized</span>
               </div>
             </div>
           </div>
 
           <div className="p-4">
-            <div className="text-label-caps text-[#747878] mb-3">Project List</div>
+            <div className="text-label-caps text-ink-muted mb-3">Project List</div>
             
             {loading ? (
-              <div className="text-data-sm text-[#BDB8AD]">Loading...</div>
+              <div className="text-data-sm text-ink-faint">Loading...</div>
             ) : projects.length === 0 ? (
-              <div className="text-data-sm text-[#BDB8AD]">No projects with location data</div>
+              <div className="text-data-sm text-ink-faint">No projects with location data</div>
             ) : (
               <div className="space-y-2">
                 {projects.filter(p => p.latitude && p.longitude).slice(0, 20).map((p) => {
@@ -139,19 +139,19 @@ export default function MapPage() {
                     <button
                       key={p.id}
                       onClick={() => setSelectedProject(p)}
-                      className="w-full text-left p-3 border border-[#111111] hover:bg-[#E5E0D8] transition-colors"
+                      className="w-full text-left p-3 border border-ink-deep hover:bg-selection transition-colors"
                     >
-                      <div className="text-data-sm text-[#111111] font-medium">
+                      <div className="text-data-sm text-ink-deep font-medium">
                         {p.title || p.name || `Project ${p.id}`}
                       </div>
-                      <div className="text-data-sm text-[#747878] mt-1">
+                      <div className="text-data-sm text-ink-muted mt-1">
                         {p.state}
                       </div>
                       <div className="flex justify-between mt-2 text-data-sm">
-                        <span className={`font-mono ${isOver ? 'text-[#8C2929]' : 'text-[#111111]'}`}>
+                        <span className={`font-mono ${isOver ? 'text-oxblood' : 'text-ink-deep'}`}>
                           {formatNaira(p.spent || p.amount || 0)}
                         </span>
-                        <span className={`font-mono ${isOver ? 'text-[#8C2929]' : 'text-[#2D5D40]'}`}>
+                        <span className={`font-mono ${isOver ? 'text-oxblood' : 'text-forest'}`}>
                           {isOver ? 'OVER' : 'OK'}
                         </span>
                       </div>
@@ -166,10 +166,10 @@ export default function MapPage() {
         {/* Map Container */}
         <div className="flex-1 relative">
           {loading && (
-            <div className="absolute inset-0 z-10 bg-[#F4F1EA] flex items-center justify-center">
+            <div className="absolute inset-0 z-10 bg-cream-page flex items-center justify-center">
               <div className="text-center">
-                <div className="text-data-lg text-[#111111]">Loading spatial data...</div>
-                <div className="text-data-sm text-[#BDB8AD] mt-2">Fetching project coordinates</div>
+                <div className="text-data-lg text-ink-deep">Loading spatial data...</div>
+                <div className="text-data-sm text-ink-faint mt-2">Fetching project coordinates</div>
               </div>
             </div>
           )}
@@ -178,43 +178,43 @@ export default function MapPage() {
 
         {/* Selected Project Panel */}
         {selectedProject && (
-          <div className="fixed bottom-0 left-0 right-0 lg:left-80 lg:right-auto z-20 border-t-[3px] border-[#111111] bg-[#111111] text-[#FCFAF5] p-4">
+          <div className="fixed bottom-0 left-0 right-0 lg:left-80 lg:right-auto z-20 border-t-[3px] border-ink-deep bg-ink-deep text-ivory-surface p-4">
             <div className="flex justify-between items-start">
               <div>
-                <div className="text-label-caps text-[#BDB8AD] mb-1">SELECTED PROJECT</div>
+                <div className="text-label-caps text-ink-faint mb-1">SELECTED PROJECT</div>
                 <div className="font-masthead text-xl">
                   {selectedProject.title || selectedProject.name}
                 </div>
-                <div className="text-data-sm text-[#BDB8AD] mt-1">
+                <div className="text-data-sm text-ink-faint mt-1">
                   {selectedProject.mda_name || 'Unknown MDA'} · {selectedProject.state}
                 </div>
               </div>
               <button
                 onClick={() => setSelectedProject(null)}
-                className="text-label-caps text-[#BDB8AD] hover:text-[#FCFAF5] px-2"
+                className="text-label-caps text-ink-faint hover:text-ivory-surface px-2"
               >
                 CLOSE
               </button>
             </div>
-            <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-[#747878]">
+            <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-ink-muted">
               <div>
-                <div className="text-label-caps text-[#BDB8AD]">Allocated</div>
+                <div className="text-label-caps text-ink-faint">Allocated</div>
                 <div className="text-data-sm font-mono mt-1">
                   {formatNaira(selectedProject.budget_allocated || 0)}
                 </div>
               </div>
               <div>
-                <div className="text-label-caps text-[#BDB8AD]">Spent</div>
+                <div className="text-label-caps text-ink-faint">Spent</div>
                 <div className="text-data-sm font-mono mt-1">
                   {formatNaira(selectedProject.spent || selectedProject.amount || 0)}
                 </div>
               </div>
               <div>
-                <div className="text-label-caps text-[#BDB8AD]">Status</div>
+                <div className="text-label-caps text-ink-faint">Status</div>
                 <div className={`text-data-sm font-mono mt-1 ${
                   (selectedProject.spent || selectedProject.amount || 0) > (selectedProject.budget_allocated || 0) * 1.1
-                    ? 'text-[#8C2929]'
-                    : 'text-[#2D5D40]'
+                    ? 'text-oxblood'
+                    : 'text-forest'
                 }`}>
                   {(selectedProject.spent || selectedProject.amount || 0) > (selectedProject.budget_allocated || 0) * 1.1
                     ? 'OVER-UTILIZED'
