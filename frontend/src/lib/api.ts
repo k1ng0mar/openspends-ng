@@ -221,11 +221,11 @@ export function formatCompact(amount: number | null | undefined): string {
 
 export function statusColor(status: string): string {
   switch (status) {
-    case 'completed': return '#00e676'
-    case 'in_progress': return '#ffd700'
-    case 'abandoned': return '#ff5252'
-    case 'not_started': return '#78909c'
-    default: return '#78909c'
+    case 'completed': return '#2D5D40'
+    case 'in_progress': return '#111111'
+    case 'abandoned': return '#8C2929'
+    case 'not_started': return '#747878'
+    default: return '#747878'
   }
 }
 

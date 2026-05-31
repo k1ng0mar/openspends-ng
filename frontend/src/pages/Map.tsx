@@ -213,8 +213,8 @@ export default function MapPage() {
                 <div className="text-label-caps text-[#BDB8AD]">Status</div>
                 <div className={`text-data-sm font-mono mt-1 ${
                   (selectedProject.spent || selectedProject.amount || 0) > (selectedProject.budget_allocated || 0) * 1.1
-                    ? 'text-[#ff5252]'
-                    : 'text-[#4caf50]'
+                    ? 'text-[#8C2929]'
+                    : 'text-[#2D5D40]'
                 }`}>
                   {(selectedProject.spent || selectedProject.amount || 0) > (selectedProject.budget_allocated || 0) * 1.1
                     ? 'OVER-UTILIZED'
