@@ -76,9 +76,6 @@ async def embed_projects(
     updated = 0
     async with httpx.AsyncClient(timeout=30.0) as client:
         for p, emb in zip(projects_to_embed, embeddings):
-            # Format as Postgres vector string
-            vector_str = "[" + ",".join(str(x) for x in emb) + "]"
-            
             await client.patch(
                 f"{settings.SUPABASE_URL}/rest/v1/projects?id=eq.{p['id']}",
                 headers={
@@ -87,7 +84,7 @@ async def embed_projects(
                     "Content-Type": "application/json",
                     "Prefer": "return=minimal"
                 },
-                json={"embedding": vector_str}
+                json={"embedding": emb}  # pass list directly, not string
             )
             updated += 1
     
@@ -118,8 +115,6 @@ async def semantic_search(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Embedding failed: {str(e)}")
     
-    vector_str = "[" + ",".join(str(x) for x in query_embedding) + "]"
-    
     # Use Supabase RPC for vector search
     async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
@@ -130,7 +125,7 @@ async def semantic_search(
                 "Content-Type": "application/json",
             },
             json={
-                "query_embedding": vector_str,
+                "query_embedding": query_embedding,  # pass as list, not string
                 "match_threshold": 0.3,
                 "match_count": limit
             }
