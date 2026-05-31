@@ -54,13 +54,13 @@ export function BudgetSpendingBarChart({ data, height = 300, title }: BudgetSpen
           .tickFormat(() => '')
       )
       .selectAll('line')
-      .attr('stroke', '#1e1e2a')
+      .attr('stroke', '#111111')
       .attr('stroke-dasharray', '2,4')
 
     g.select('.grid .domain').remove()
 
-    // Bars
-    const colors = { budgeted: '#00e676', spent: '#ffd700' }
+    // Bars — Institutional Broadsheet palette
+    const colors = { budgeted: '#2D5D40', spent: '#8C2929' }
 
     ;(['budgeted', 'spent'] as const).forEach(key => {
       g.selectAll(`.bar-${key}`)
@@ -86,23 +86,23 @@ export function BudgetSpendingBarChart({ data, height = 300, title }: BudgetSpen
       .attr('transform', `translate(0,${chartHeight})`)
       .call(d3.axisBottom(x0).tickSize(0))
       .selectAll('text')
-      .attr('fill', '#888')
+      .attr('fill', '#747878')
       .attr('font-size', '10px')
       .attr('font-family', 'JetBrains Mono, monospace')
       .attr('transform', 'rotate(-30)')
       .style('text-anchor', 'end')
 
-    g.selectAll('.domain').attr('stroke', '#2a2a3a')
+    g.selectAll('.domain').attr('stroke', '#111111')
 
     // Y axis
     g.append('g')
       .call(d3.axisLeft(y).ticks(5).tickFormat(d => formatCompact(d as number)))
       .selectAll('text')
-      .attr('fill', '#666')
+      .attr('fill', '#747878')
       .attr('font-size', '10px')
       .attr('font-family', 'JetBrains Mono, monospace')
 
-    g.selectAll('.domain').attr('stroke', '#2a2a3a')
+    g.selectAll('.domain').attr('stroke', '#111111')
 
     // Title
     if (title) {
@@ -110,7 +110,7 @@ export function BudgetSpendingBarChart({ data, height = 300, title }: BudgetSpen
         .attr('x', width / 2)
         .attr('y', -10)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#888')
+        .attr('fill', '#747878')
         .attr('font-size', '11px')
         .attr('font-family', 'JetBrains Mono, monospace')
         .text(title)
@@ -121,14 +121,14 @@ export function BudgetSpendingBarChart({ data, height = 300, title }: BudgetSpen
     ;([['budgeted', 'Budgeted'], ['spent', 'Spent']] as const).forEach(([key, label], i) => {
       const lg = legend.append('g').attr('transform', `translate(${i * 70}, 0)`)
       lg.append('rect').attr('width', 10).attr('height', 10).attr('rx', 2).attr('fill', colors[key])
-      lg.append('text').attr('x', 14).attr('y', 9).attr('fill', '#888').attr('font-size', '9px').attr('font-family', 'JetBrains Mono, monospace').text(label)
+      lg.append('text').attr('x', 14).attr('y', 9).attr('fill', '#747878').attr('font-size', '9px').attr('font-family', 'JetBrains Mono, monospace').text(label)
     })
 
   }, [data, height, title])
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-600 text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
         No data available
       </div>
     )
@@ -177,7 +177,7 @@ export function VarianceChart({ data, height = 250 }: VarianceChartProps) {
       .attr('x2', x(0))
       .attr('y1', 0)
       .attr('y2', chartHeight)
-      .attr('stroke', '#3a3a4f')
+      .attr('stroke', '#111111')
       .attr('stroke-width', 1)
 
     // Bars
@@ -189,7 +189,7 @@ export function VarianceChart({ data, height = 250 }: VarianceChartProps) {
       .attr('x', d => d.variance_pct >= 0 ? x(0) : x(d.variance_pct))
       .attr('width', 0)
       .attr('rx', 2)
-      .attr('fill', d => d.variance_pct >= 0 ? '#00e676' : '#ff5252')
+      .attr('fill', d => d.variance_pct >= 0 ? '#2D5D40' : '#8C2929')
       .attr('opacity', 0.8)
       .transition()
       .duration(700)
@@ -204,7 +204,7 @@ export function VarianceChart({ data, height = 250 }: VarianceChartProps) {
       .attr('y', d => (y(d.mda_name) || 0) + y.bandwidth() / 2)
       .attr('dy', '0.35em')
       .attr('text-anchor', 'end')
-      .attr('fill', '#888')
+      .attr('fill', '#747878')
       .attr('font-size', '10px')
       .attr('font-family', 'JetBrains Mono, monospace')
       .text(d => d.mda_name.length > 18 ? d.mda_name.slice(0, 18) + '…' : d.mda_name)
@@ -215,7 +215,7 @@ export function VarianceChart({ data, height = 250 }: VarianceChartProps) {
       .join('text')
       .attr('y', d => (y(d.mda_name) || 0) + y.bandwidth() / 2)
       .attr('dy', '0.35em')
-      .attr('fill', '#fff')
+      .attr('fill', '#111111')
       .attr('font-size', '9px')
       .attr('font-family', 'JetBrains Mono, monospace')
       .attr('opacity', 0)
@@ -230,7 +230,7 @@ export function VarianceChart({ data, height = 250 }: VarianceChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-600 text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
         No variance data
       </div>
     )
@@ -277,7 +277,7 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
     g.append('g')
       .call(d3.axisLeft(y).ticks(5).tickSize(-width).tickFormat(() => ''))
       .selectAll('line')
-      .attr('stroke', '#1e1e2a')
+      .attr('stroke', '#111111')
       .attr('stroke-dasharray', '2,4')
     g.select('.grid .domain').remove()
 
@@ -301,7 +301,7 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
 
     g.append('path')
       .datum(data)
-      .attr('fill', '#ffd700')
+      .attr('fill', '#8C2929')
       .attr('fill-opacity', 0.06)
       .attr('d', areaSpent)
 
@@ -309,7 +309,7 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
     const path1 = g.append('path')
       .datum(data)
       .attr('fill', 'none')
-      .attr('stroke', '#00e676')
+      .attr('stroke', '#2D5D40')
       .attr('stroke-width', 2)
       .attr('d', lineBudgeted as any)
 
@@ -317,7 +317,7 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
     const path2 = g.append('path')
       .datum(data)
       .attr('fill', 'none')
-      .attr('stroke', '#ffd700')
+      .attr('stroke', '#8C2929')
       .attr('stroke-width', 2)
       .attr('d', lineSpent as any)
 
@@ -335,8 +335,8 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
 
     // Dots
     ;[
-      { key: 'budgeted', color: '#00e676', data: data.map(d => ({ x: d.year, y: d.budgeted })) },
-      { key: 'spent', color: '#ffd700', data: data.map(d => ({ x: d.year, y: d.spent })) },
+      { key: 'budgeted', color: '#2D5D40', data: data.map(d => ({ x: d.year, y: d.budgeted })) },
+      { key: 'spent', color: '#8C2929', data: data.map(d => ({ x: d.year, y: d.spent })) },
     ].forEach(series => {
       g.selectAll(`.dot-${series.key}`)
         .data(series.data)
@@ -345,7 +345,7 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
         .attr('cy', d => y(d.y))
         .attr('r', 0)
         .attr('fill', series.color)
-        .attr('stroke', '#0a0a0f')
+        .attr('stroke', '#111111')
         .attr('stroke-width', 2)
         .transition()
         .delay(800)
@@ -358,32 +358,32 @@ export function TimelineChart({ data, height = 280 }: TimelineChartProps) {
       .attr('transform', `translate(0,${chartHeight})`)
       .call(d3.axisBottom(x).ticks(data.length).tickFormat(d3.format('d')))
       .selectAll('text')
-      .attr('fill', '#888')
+      .attr('fill', '#747878')
       .attr('font-size', '10px')
       .attr('font-family', 'JetBrains Mono, monospace')
 
     g.append('g')
       .call(d3.axisLeft(y).ticks(5).tickFormat(d => formatCompact(d as number)))
       .selectAll('text')
-      .attr('fill', '#666')
+      .attr('fill', '#747878')
       .attr('font-size', '10px')
       .attr('font-family', 'JetBrains Mono, monospace')
 
-    g.selectAll('.domain').attr('stroke', '#2a2a3a')
+    g.selectAll('.domain').attr('stroke', '#111111')
 
     // Legend
     const legend = g.append('g').attr('transform', `translate(${width - 120}, 0)`)
-    ;[{ color: '#00e676', label: 'Budgeted' }, { color: '#ffd700', label: 'Spent' }].forEach((item, i) => {
+    ;[{ color: '#2D5D40', label: 'Budgeted' }, { color: '#8C2929', label: 'Spent' }].forEach((item, i) => {
       const lg = legend.append('g').attr('transform', `translate(${i * 60}, 0)`)
       lg.append('circle').attr('r', 4).attr('fill', item.color)
-      lg.append('text').attr('x', 8).attr('y', 4).attr('fill', '#888').attr('font-size', '9px').attr('font-family', 'JetBrains Mono, monospace').text(item.label)
+      lg.append('text').attr('x', 8).attr('y', 4).attr('fill', '#747878').attr('font-size', '9px').attr('font-family', 'JetBrains Mono, monospace').text(item.label)
     })
 
   }, [data, height])
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-600 text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
         No timeline data
       </div>
     )
@@ -438,7 +438,7 @@ export function DonutChart({ data, height = 220, centerLabel, centerValue }: Don
       .attr('d', arc as any)
       .attr('fill', d => d.data.color)
       .attr('opacity', 0.85)
-      .attr('stroke', '#0a0a0f')
+      .attr('stroke', '#111111')
       .attr('stroke-width', 2)
       .on('mouseenter', function () {
         d3.select(this).transition().duration(200).attr('d', arcHover as any).attr('opacity', 1)
@@ -458,7 +458,7 @@ export function DonutChart({ data, height = 220, centerLabel, centerValue }: Don
       g.append('text')
         .attr('text-anchor', 'middle')
         .attr('dy', '-0.2em')
-        .attr('fill', '#fff')
+        .attr('fill', '#111111')
         .attr('font-size', '18px')
         .attr('font-weight', '700')
         .attr('font-family', 'JetBrains Mono, monospace')
@@ -468,7 +468,7 @@ export function DonutChart({ data, height = 220, centerLabel, centerValue }: Don
       g.append('text')
         .attr('text-anchor', 'middle')
         .attr('dy', '1.2em')
-        .attr('fill', '#666')
+        .attr('fill', '#747878')
         .attr('font-size', '10px')
         .attr('font-family', 'JetBrains Mono, monospace')
         .text(centerLabel)
@@ -478,7 +478,7 @@ export function DonutChart({ data, height = 220, centerLabel, centerValue }: Don
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-600 text-sm font-mono">
+      <div className="flex items-center justify-center h-full text-[#747878] text-sm font-mono">
         No data
       </div>
     )
