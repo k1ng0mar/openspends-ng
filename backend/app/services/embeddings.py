@@ -29,6 +29,7 @@ class EmbeddingService:
                 json={
                     "model": self.model,
                     "input": texts,
+                    "dimensions": 1024,
                 }
             )
             response.raise_for_status()

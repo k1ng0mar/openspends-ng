@@ -30,7 +30,7 @@ class SupabaseClient:
     ) -> List[Dict[str, Any]]:
         """Fetch projects from Supabase REST API."""
         params = {
-            "select": "id,title,mda_id,state_id,lga_id,contractor,start_date,end_date,status,budget_allocated,spent,latitude,longitude,source",
+            "select": "id,title,mda_id,state_id,lga_id,contractor,start_date,end_date,status,budget_allocated,spent,latitude,longitude,source,embedding",
             "limit": limit,
             "offset": offset
         }
