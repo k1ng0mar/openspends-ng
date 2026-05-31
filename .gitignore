@@ -26,3 +26,4 @@ Thumbs.db
 *.pdf
 !data/*.json
 *.env.deploy
+.env.vercel
